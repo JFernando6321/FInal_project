@@ -2,20 +2,21 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
-\usepackage{natbib}
 \usepackage{geometry}
 \usepackage[english]{babel}
 \usepackage{physics}
 \usepackage{multicol}
-
+\usepackage[square,numbers]{natbib}
+%\bibliographystyle{abbrvnat}
+ 
 \geometry{a4paper, margin=1in}
 
 \title{Lennard-Jones Fluids and Monte Carlo Simulation}
 \author{
-    Julio Fernando Vicente Maldonado\thanks{Escuela de Ciencias Físicas y Matemáticas, Universidad de San Carlos de Guatemala} \\
+    Julio Fernando Vicente Maldonado \thanks{Escuela de Ciencias Físicas y Matemáticas, Universidad de San Carlos de Guatemala} \\
      Brian David Leiva Berbena\footnotemark[1] \\
     Francisco Toledo\footnotemark[1] \\
-    \texttt{joulefvicente@gmail.com, bridleiva@gmail.com, franciso@gmail.com}
+    \texttt{joulefvicente@gmail.com, bridleiva@gmail.com, toledo.fran010@gmail.com}
 }
 \date{\today}
 
@@ -28,18 +29,61 @@ This report presents a detailed study of Lennard-Jones fluids using Monte Carlo 
 \end{abstract}
 
 \section{Introduction}
-Lennard-Jones fluids are a type of molecular fluid characterized by the Lennard-Jones potential. This potential is widely used in molecular simulations due to its ability to approximate the interactions between a pair of neutral atoms or molecules. Monte Carlo simulations are a computational technique used to study the thermodynamic properties of these fluids. In this report, we explore the application of Monte Carlo simulations to Lennard-Jones fluids and analyze the results.
 
+\begin{multicols}{2}
+Lennard-Jones fluids are a type of molecular fluid characterized by the Lennard-Jones potential, which is a mathematical model that approximates the interaction between a pair of neutral atoms or molecules. This potential is given by the equation:
+\begin{equation}
+    u(r) = 4\epsilon \left[ \left( \frac{\sigma}{r} \right)^{12} - \left( \frac{\sigma}{r} \right)^{6} \right] 
+\end{equation}
+where \( \epsilon \) is the depth of the potential well, \( \sigma \) is the finite distance at which the inter-particle potential is zero, and \( r \) is the distance between the particles. The \( r^{-12} \) term represents the repulsive forces, while the \( r^{-6} \) term represents the attractive forces \cite{Viot2016}. Due to its simplicity and effectiveness, the Lennard-Jones potential is widely used in molecular simulations to model van der Waals interactions.
+
+In statistical mechanics, we are interested in computing averages of thermodynamic properties as a function of atom positions and momenta. A thermodynamic average that depends only on configurational properties can be computed by evaluating a multivariate integral:
+\begin{equation}
+    \langle Q \rangle = \int_V Q\qty(\textbf{r}^N)\rho(\textbf{r}^N)d\textbf{r}^N
+\end{equation}   
+where \( Q\qty(\textbf{r}^N) \) is the thermodynamic quantity of interest that depends only on the configuration, \( \rho\qty( \textbf{r}^N) \) is the probability density, and \( V \) defines the volume of configuration space over which \( \rho \) has support. 
+
+This integral is very challenging to evaluate analytically due to the high dimensionality of the configuration space. However, Monte Carlo integration provides a powerful numerical method to estimate this value. Monte Carlo simulations use random sampling to explore the configuration space and compute these integrals, making them invaluable in studying complex systems where traditional methods fail.
+
+Monte Carlo simulations are a computational technique used to study the thermodynamic properties of Lennard-Jones fluids. These simulations involve generating random configurations of particles and evaluating the energy of each configuration using the Lennard-Jones potential. By accepting or rejecting these configurations based on a probability criterion, we can sample the equilibrium distribution of the system.
+
+In this report, we explore the application of Monte Carlo simulations to Lennard-Jones fluids. We describe the methodology, including the initialization of particle positions, the calculation of the Lennard-Jones potential, and the criteria for accepting new configurations. Our analysis focuses on understanding the behavior of the system at different temperatures and densities, providing insights into the thermodynamic properties and phase behavior of Lennard-Jones fluids \citep{msse2022}.
+\end{multicols}
+ 
+
+ 
 \section{Methodology}
 \subsection{Lennard-Jones Potential}
-The Lennard-Jones potential is given by:
+The Lennard-Jones potential is commonly used in molecular simulations to model nonbonded interactions, including those of noble gases. This potential is given by the equation, again:
 \begin{equation}
-    V(r) = 4\epsilon \left[ \left( \frac{\sigma}{r} \right)^{12} - \left( \frac{\sigma}{r} \right)^{6} \right],
+    u(r) = 4\epsilon \left[ \left( \frac{\sigma}{r} \right)^{12} - \left( \frac{\sigma}{r} \right)^{6} \right]
 \end{equation}
-where \( \epsilon \) is the depth of the potential well, \( \sigma \) is the finite distance at which the inter-particle potential is zero, and \( r \) is the distance between particles.
+where \( \epsilon \) represents the depth of the potential well, \( \sigma \) is the finite distance at which the inter-particle potential is zero, and \( r \) is the distance between particles.
+
+\begin{multicols}{2}
+  
+ \includegraphics[width = 7.5cm]{01.png}
+
+The graph shows the reduced Lennard-Jones potential, \( u(r) /\epsilon \), as a function of \( r/\sigma \). All quantities are expressed in dimensionless units: temperature is represented as \( T^* = k_B T/\epsilon \), where \( k_B \) is the Boltzmann constant; distance as \( r^* = r/\sigma \); and energy as \( u^* = u/\epsilon \).
+
+The three-dimensional Lennard-Jones model has a critical point at \( T^* = 1.3 \) and \( \rho^*_c = 0.3 \), and a triple point at \( T^*_t = 0.6 \) and \( \rho^*_t = 0.8 \). For our simulations, we will use the value for the critical point \( T^* = 1.3 \). Consequently, the inverse temperature \( \beta \) is given by:
+\begin{equation}
+    \beta = \frac{1}{\epsilon k_B T^*}
+\end{equation}
+Assuming \( \epsilon = k_B = 1 \) in reduced units, then \( \beta = 0.769230 \) \citep{Viot2016}. This value represents the theoretical value for \( \beta \) in our simulation.
+
+For more complex systems, additional energy terms may be included alongside the Lennard-Jones potential. However, for our system of noble gases, the Lennard-Jones potential is the sole contribution to the potential energy.
+
+\end{multicols}
+
+
 
 \subsection{Monte Carlo Simulation}
-Monte Carlo simulations involve random sampling to obtain numerical results. For Lennard-Jones fluids, the Metropolis algorithm is typically used. The steps include initialization, configuration generation, energy calculation, and acceptance criteria based on the Boltzmann factor.
+For Lennard-Jones fluids, the Metropolis algorithm is typically used. The steps include initialization, configuration generation, energy calculation, and acceptance criteria based on the Boltzmann factor.
+Throughout this project, we will be working with reduced units. 
+\subsection{Monte carlo model types}
+
+\subsection{ The metropolis algorithm}
 
 \section{Results}
 The simulation results show the behavior of Lennard-Jones fluids under various temperatures and densities. The radial distribution function \( g(r) \), potential energy, and pressure are calculated and compared with theoretical predictions.
