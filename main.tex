@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{wrapfig}
 \usepackage{geometry}
 \usepackage[english]{babel}
 \usepackage{physics}
@@ -16,7 +17,8 @@
     Julio Fernando Vicente Maldonado \thanks{Escuela de Ciencias Físicas y Matemáticas, Universidad de San Carlos de Guatemala} \\
      Brian David Leiva Berbena\footnotemark[1] \\
     Francisco Toledo\footnotemark[1] \\
-    \texttt{joulefvicente@gmail.com, bridleiva@gmail.com, toledo.fran010@gmail.com}
+    \texttt{joulefvicente@gmail.com, bridleiva@gmail.com, 
+      toledo.fran010@gmail.com}
 }
 \date{\today}
 
@@ -61,9 +63,9 @@ The Lennard-Jones potential is commonly used in molecular simulations to model n
 where \( \epsilon \) represents the depth of the potential well, \( \sigma \) is the finite distance at which the inter-particle potential is zero, and \( r \) is the distance between particles.
 
 \begin{multicols}{2}
-  
- \includegraphics[width = 7.5cm]{01.png}
-
+\begin{center}
+ \includegraphics[width = 7.5 cm]{01.png}
+\end{center}
 The graph shows the reduced Lennard-Jones potential, \( u(r) /\epsilon \), as a function of \( r/\sigma \). All quantities are expressed in dimensionless units: temperature is represented as \( T^* = k_B T/\epsilon \), where \( k_B \) is the Boltzmann constant; distance as \( r^* = r/\sigma \); and energy as \( u^* = u/\epsilon \).
 
 The three-dimensional Lennard-Jones model has a critical point at \( T^* = 1.3 \) and \( \rho^*_c = 0.3 \), and a triple point at \( T^*_t = 0.6 \) and \( \rho^*_t = 0.8 \). For our simulations, we will use the value for the critical point \( T^* = 1.3 \). Consequently, the inverse temperature \( \beta \) is given by:
@@ -79,22 +81,41 @@ For more complex systems, additional energy terms may be included alongside the 
 
 
 \subsection{Monte Carlo Simulation}
-For Lennard-Jones fluids, the Metropolis algorithm is typically used. The steps include initialization, configuration generation, energy calculation, and acceptance criteria based on the Boltzmann factor.
-Throughout this project, we will be working with reduced units. 
-\subsection{Monte carlo model types}
+For Lennard-Jones fluids, the Metropolis algorithm is typically used. This involves several key steps.
+\begin{multicols}{2}
+     The simulation begins with an initial configuration of particles, typically arranged in a cubic box. The Metropolis algorithm then generates new configurations by randomly displacing particles and calculates the resulting energy changes. These changes are accepted or rejected based on the Boltzmann factor, ensuring the system evolves toward equilibrium.
+
+In our simulations, we will use reduced units to simplify the calculations. This involves normalizing quantities by characteristic length ($\sigma$), energy ($\epsilon$), and other relevant parameters of the Lennard-Jones potential\cite{NIST_LJ_Fluid}.
+
+Monte Carlo simulations in the canonical ensemble  for Lennard-Jones fluids involve several detailed steps:
+\begin{itemize}
+    \item Initialization: Start with a predefined number of particles in a cubic box. Initial positions can be random or based on a lattice structure.
+\item Potential Calculation: Compute the pairwise Lennard-Jones potential   $u(r)$, given by equation (1).
+\item Metropolis Algorithm: We will expand on this algorithm in the next section 
+\item Equilibrium and production: Run the simulation for a sufficient number of steps to reach equilibrium. After equilibrium, collect data to calculate ensemble averages of properties such as energy, average energy and pressure, which are the ones we will consider. 
+
+\end{itemize}
+
+\end{multicols}
 
 \subsection{ The metropolis algorithm}
 
+
+\subsection{Monte carlo model types}
+
+
+
 \section{Results}
-The simulation results show the behavior of Lennard-Jones fluids under various temperatures and densities. The radial distribution function \( g(r) \), potential energy, and pressure are calculated and compared with theoretical predictions.
+The simulation results show the behavior of Lennard-Jones fluids under various temperatures and densities. potential energy, and pressure are calculated and compared with theoretical predictions.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.7\textwidth]{08.png}
-    \caption{*Las simulaciones que obtengamos*.}
-    \label{fig:gr}
-\end{figure}
 
+\hspace{1cm}Step 1 \hspace{6cm} step 2
+
+\includegraphics[width=7.5cm]{08.png} \includegraphics[width=7.5cm]{09.png}
+\newpage
+Step 3 
+
+\includegraphics[width=7.5cm]{10.png}
 \section{Discussion}
 The results demonstrate that Monte Carlo simulations can accurately predict the properties of Lennard-Jones fluids. The agreement with theoretical and previous simulation studies confirms the reliability of the simulation approach. 
 
