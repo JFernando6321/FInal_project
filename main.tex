@@ -2,11 +2,12 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
-\usepackage{wrapfig}
+\usepackage{float}
 \usepackage{geometry}
 \usepackage[english]{babel}
 \usepackage{physics}
 \usepackage{multicol}
+\usepackage{url}
 \usepackage[square,numbers]{natbib}
 %\bibliographystyle{abbrvnat}
  
@@ -25,11 +26,11 @@
 \begin{document}
 
 \maketitle
-
 \begin{abstract}
-This report presents a detailed study of Lennard-Jones fluids using Monte Carlo simulations. The aim is to investigate the properties and behavior of these fluids under different conditions. The results are compared with theoretical predictions and previous studies to validate the simulation approach.
+In this study, we perform a Monte Carlo simulation to analyze the properties and behavior of Lennard-Jones fluids. Using a system size of 600 particles and a simulation span of 6000 steps, we investigate the thermodynamic properties and structural configurations of these fluids under varying conditions. The Metropolis algorithm is employed to sample the system's states and compute the potential energy variations. Various graphical representations, including energy variation plots, XZ plane projections, and 3D state visualizations, are generated to provide insights into the system's evolution. These visualizations, created using the Plotter class, highlight significant trends and behaviors in the fluid's dynamics. The simulation results and associated plots are documented in a  GitHub repository \cite{briandl2024}, with an interactive demonstration available via Google Colab.
 \end{abstract}
 
+ 
 \section{Introduction}
 
 \begin{multicols}{2}
@@ -64,7 +65,7 @@ where \( \epsilon \) represents the depth of the potential well, \( \sigma \) is
 
 \begin{multicols}{2}
 \begin{center}
- \includegraphics[width = 7.5 cm]{01.png}
+ \includegraphics[width = 7.5 cm]{images/01.png}
 \end{center}
 The graph shows the reduced Lennard-Jones potential, \( u(r) /\epsilon \), as a function of \( r/\sigma \). All quantities are expressed in dimensionless units: temperature is represented as \( T^* = k_B T/\epsilon \), where \( k_B \) is the Boltzmann constant; distance as \( r^* = r/\sigma \); and energy as \( u^* = u/\epsilon \).
 
@@ -99,28 +100,111 @@ Monte Carlo simulations in the canonical ensemble  for Lennard-Jones fluids invo
 \end{multicols}
 
 \subsection{ The metropolis algorithm}
+ It is especially useful in statistical mechanics for systems such as the one we are dealing with: Lennard-Jones fluids. This algorithm allows the system to evolve towards equilibrium by accepting or rejecting new configurations based on an acceptance criterion.
 
+ Steps of the Metropolis Algorithm:
+\begin{multicols}{2}
+\begin{enumerate}
+    \item   Initialization :
+   \begin{itemize}
+       \item Begin with an initial configuration of particles, typically arranged in a cubic box.
+       \item  Set initial parameters such as temperature, number of particles, and the Lennard-Jones potential parameters (\(\epsilon\) and ($\sigma$).
+   \end{itemize} 
+   \item   Configuration Generation:
+   \begin{itemize}
+       \item Randomly select a particle in the system.
+   \item Propose a new position for this particle by adding a random displacement vector. 
+   \end{itemize}
+   \item Energy Calculation:
+    Calculate the change in potential energy (\ $\Delta U$) resulting from the proposed move. This involves computing the difference in the Lennard-Jones potential between the new and old configurations.
+\item   Acceptance Criteria:
+   \begin{itemize}
+       \item   Accept the new configuration with a probability given by the Metropolis criterion:
+     \[
+     P(\text{accept}) = \min\left(1, e^{-\beta \Delta U}\right)
+     \]
+     where \(\beta = \frac{1}{k_B T}\), \(k_B\) is the Boltzmann constant, and \(T\) is the temperature \cite{msse2022}.
+   \item If the new configuration is accepted, update the system state. If not, retain the old configuration.
+
+   \end{itemize}
+
+\item Iteration:
+    Repeat the process for a large number of iterations to allow the system to sample the configuration space adequately. This helps in achieving equilibrium and collecting meaningful statistics \cite{Gould2006}.
+
+
+
+
+
+
+\end{enumerate}
+The Metropolis algorithm is a Markov Chain Monte Carlo (MCMC) method, which ensures that the system samples from the desired probability distribution over time. The acceptance criterion, based on the Boltzmann factor, ensures that configurations with lower energy are more likely to be accepted, promoting the system's evolution toward equilibrium \cite{Stephens2024}.
+ \end{multicols}
+ 
 
 \subsection{Monte carlo model types}
 
 
 
 \section{Results}
-The simulation results show the behavior of Lennard-Jones fluids under various temperatures and densities. potential energy, and pressure are calculated and compared with theoretical predictions.
+The simulation results elucidate the behavior of Lennard-Jones fluids under various temperatures and densities. The potential energy and pressure are calculated and compared with theoretical predictions.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=13cm]{images/02.png}
+    \caption{Particle configuration of a simple two-dimensional liquid in the initial step.}
+    \label{fig:initial}
+\end{figure}
+
+In the last step of the simulation, we obtain the following configuration:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=12cm]{images/03.png}
+    \caption{Particle configuration of a simple two-dimensional liquid in the final step.}
+    \label{fig:final}
+\end{figure}
+
+ Finally, the variation of the energy of the system over time is presented in the figure below:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=13cm]{images/04.png}
+    \caption{Particle configuration of a two-dimensional liquid in 3D.}
+    \label{fig:3d}
+\end{figure}
+
+Figure \ref{fig:3d} provides a three-dimensional visualization of the particle arrangement, giving a comprehensive view of the spatial distribution and interaction of particles in the simulated fluid.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=13cm]{images/05.png}
+    \caption{Energy versus time.}
+    \label{fig:energy}
+\end{figure}
+
+Figure \ref{fig:energy} illustrates the variation of energy over time throughout the simulation. Initially, energy fluctuates significantly as the system seeks equilibrium. As the simulation proceeds, the energy stabilizes, indicating the system's approach to a steady state.
 
 
-\hspace{1cm}Step 1 \hspace{6cm} step 2
 
-\includegraphics[width=7.5cm]{08.png} \includegraphics[width=7.5cm]{09.png}
-\newpage
-Step 3 
+\section{Discussion of results}
+\begin{multicols}{2}
+The results obtained from Monte Carlo simulations demonstrate the ability of this method to accurately predict the properties of Lennard-Jones fluids. 
 
-\includegraphics[width=7.5cm]{10.png}
-\section{Discussion}
-The results demonstrate that Monte Carlo simulations can accurately predict the properties of Lennard-Jones fluids. The agreement with theoretical and previous simulation studies confirms the reliability of the simulation approach. 
+In Figure \ref{fig:initial}, it is observed that in the initial step the particles are compressed in a dense region. This is consistent with the expected behavior of the Lennard-Jones potential, which has a minimum at a specific distance, as shown in Figure of the potential. The initial arrangement suggests that the particles are within the region of strong mutual attraction, which is consistent with the critical value of \( T^* = 1.3 \) used in the simulation.
 
+As the simulation progresses, as seen in Figure \ref{fig:final}, the particles disperse more uniformly. This behavior reflects the evolution of the system toward an equilibrium state where the repulsive and attractive forces of the Lennard-Jones potential are balanced. Figure \ref{fig:3d} provides a three-dimensional visualization confirming the dispersion and spatial distribution of the particles.
+
+Figure \ref{fig:energy} shows the variation of the energy of the system over time. Initially, the energy fluctuates significantly due to the system's search for equilibrium. Over time, these fluctuations decrease and the energy stabilizes, indicating that the system has reached a steady state quickly. This behavior is typical in Monte Carlo simulations and confirms that the system has reached thermal equilibrium.
+\end{multicols}
 \section{Conclusion}
-Monte Carlo simulations are an effective tool for studying Lennard-Jones fluids. The findings provide insights into the thermodynamic properties and can be used to model more complex systems. 
+The results obtained provide valuable insights into the thermodynamic properties and structural behavior of these fluids under various conditions.
+\begin{multicols}{2}
+  
+    \begin{itemize}
+        \item Agreement with Theory: The simulation results show good agreement with theoretical predictions and previous studies, validating the accuracy of the approach used.
+        \item Energetic Stability:The stabilization of the system energy over time indicates that the simulations reach a steady state, reflecting the expected thermal equilibrium.
+        \item  Applicability: These findings not only confirm the usefulness of Monte Carlo simulations for studying Lennard-Jones fluids, but also suggest that this method can be extended to investigate more complex molecular systems.
+    \end{itemize}
+\end{multicols}
+
 
 \bibliographystyle{plainnat}
 \bibliography{referencias}
