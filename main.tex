@@ -142,8 +142,34 @@ The Metropolis algorithm is a Markov Chain Monte Carlo (MCMC) method, which ensu
  
 
 \subsection{Monte carlo model types}
+\begin{multicols}{2}
 
+The versatility of the Monte Carlo method, combined with the potential of Lennard-Jones, allows for a wide range of simulations that can provide deeper insight into thermodynamic properties that can help us in statistical mechanics.
+ Here are some types of extended models and recommendations for additional simulations that can improve our understanding of Lennard-Jones fluids, which we do not consider here.
 
+ 
+\begin{itemize}
+    \item Pressure vs Time:
+
+In addition to energy calculations, tracking the pressure variation over time can provide crucial information about the system's approach to equilibrium and its dynamic behavior. 
+To do this, the instantaneous pressure at each step must be calculated and compared to the simulation time. 
+
+\begin{center}
+\includegraphics[width=6.5cm]{images/16.png}
+\end{center}
+This illustrative example is taken from The Wolfram Community offers practical examples and discussions on the implementation of such simulations, which can be especially useful for visualizing pressure fluctuations over time \cite{wolfram_lj_fluid}. 
+    \item  Pressure as a function density:
+To generate pressure versus density plots (with the statistics equation), it is necessary to perform simulations at different densities keeping temperature and number of particles constant. These plots are fundamental to study phase behavior, such as the gas-liquid coexistence curve and critical phenomena.
+
+\begin{center}
+\includegraphics[width=6.5cm]{images/17.png}
+\end{center}
+This illustrative example is obtained from the National Institute of Standards and Technology (NIST), which offers numerous data and interactive tools for studying the Lennard-Jones equation of state of fluids, in particular this one in which for each temperature, five raw macrostate (particle number) distributions are provided \cite{NIST_LJ_Fluid}.  
+
+    
+\end{itemize}
+    
+\end{multicols}
 
 \section{Results}
 The simulation results elucidate the behavior of Lennard-Jones fluids under various temperatures and densities. The potential energy and pressure are calculated and compared with theoretical predictions.
